@@ -1,0 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+}
+
+.container {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 30px;
+    box-sizing: border-box;
+}
+
+.lightBackground {
+    background-color: #fafafa;
+}
+
+.darkBackground {
+    background-color: #ccd4d2;
+}
+
+.buttonContainer {
+    margin-top: 20px;
+    display: flex;
+    /* Ensure buttons are always displayed */
+    align-items: center;
+    justify-content: center;
+}
+
+.buttonContainer button {
+    margin-right: 10px;
+    height: 40px;
+    width: 200px;
+    border-radius: 20px;
+    border-width: 2px;
+    background-color: rgb(212, 209, 174);
+    /* Add margin between buttons */
+}
+
+.result {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.correct {
+    color: #34d134;
+}
+
+.incorrect {
+    color: #f75656;
+}
