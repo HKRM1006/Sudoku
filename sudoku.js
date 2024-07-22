@@ -12,8 +12,24 @@ document.addEventListener("DOMContentLoaded", function () {
     ];
     let puzzle= [[],[],[],[],[],[],[],[],[]];
     let solution= [[],[],[],[],[],[],[],[],[]];
+    let enableTimer = false;
+    let checking = false;
+    let second = 0, minute = 0, hour = 0;
     copyArray(seed,puzzle);
+    const timer = document.getElementById("timer");
     const container = document.getElementById("container");
+    function time(){
+        second++;
+        if (second === 60){
+            second = 0;
+            minute++;
+            if (minute === 60){
+                minute = 0;
+                hour++;
+            }
+        }
+        timer.innerHTML = "<h1>"+((hour<10)?"0"+hour:hour)+":"+((minute<10)?"0"+minute:minute)+":"+((second<10)?"0"+second:second)+"</h1>"; 
+    }
     function copyArray(seed,newArray){
         for (let i = 0;i<9;i++){
             for (let j = 0;j<9;j++){
@@ -123,7 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
         deleteCell(puzzle);
         copyArray(puzzle,solution);
     }
-    createSudokuGrid(generateRandomSudoku(puzzle));
+    generateRandomSudoku(puzzle);
+    createSudokuGrid(puzzle,puzzle);
     // Function to generate a random Sudoku puzzle
     function generateRandomSudoku(puzzle) {
         generateRandomSudokuPuzzle(puzzle);
@@ -131,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     // Function to create the Sudoku puzzle grid
-    function createSudokuGrid(puzzle) {
+    function createSudokuGrid(puzzle, currentSolve) {
         container.innerHTML = '';
         for (let i = 0; i<9;i++){
             let rowElement = document.createElement('div');
@@ -141,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 cellElement.classList.add('cell');
                 cellElement.type = 'text';
                 cellElement.maxLength = 1;
-                cellElement.value = (puzzle[i][j]!==0)?puzzle[i][j]:'';
+                cellElement.value = (currentSolve[i][j]!==0)?currentSolve[i][j]:'';
                 cellElement.readOnly = (puzzle[i][j]!==0)?true:false;
                 cellElement.id=String(i)+String(j);
                 cellElement.style.backgroundColor = (puzzle[i][j]!==0)?'#ccd4d2':'#fafafa';
@@ -244,7 +261,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     document.getElementById('generateButton').onclick = function(){
         copyArray(seed,puzzle);
-        createSudokuGrid(generateRandomSudoku(puzzle));
+        generateRandomSudoku(puzzle)
+        createSudokuGrid(puzzle,puzzle);
+        timer.innerHTML = "<h1>00:00:00</h1>"; 
+        document.getElementById('startButton').innerText = "Start";
+        clearInterval(interval);
+        enableTimer = false;
+        hour = 0;
+        minute = 0;
+        second = 0;
     }
     document.getElementById('solveButton').onclick = function(){
         let currentSolve = [[],[],[],[],[],[],[],[],[]];
@@ -257,21 +282,41 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
         }
-        if (ValidCheck() && solvePuzzle(seed,puzzle,currentSolve,0,0)) createSudokuGrid(currentSolve);
+        if (ValidCheck() && solvePuzzle(seed,puzzle,currentSolve,0,0)) createSudokuGrid(puzzle,currentSolve);
         else {
             solvePuzzle(seed,puzzle,solution,0,0);
-            createSudokuGrid(solution);
+            createSudokuGrid(puzzle,solution);
             let result = document.createElement('h2');
             result = "Không tồn tại kết quả đúng theo lời giải hiện tại. Hiển thị kết quả tham khảo.";
             container.append(document.createElement('br'));
             container.append(result);
         };
+        clearInterval(interval);
+        enableTimer = false;
+        document.getElementById('startButton').innerText = "Start";
     }
-    document.getElementById('resetButton').onclick = function(){
-        createSudokuGrid(puzzle);
+    document.getElementById('clearButton').onclick = function(){
+        createSudokuGrid(puzzle,puzzle);
     }
     document.getElementById('checkButton').onclick = function(){
-        ValidColor();
+        let currentSolve = [[],[],[],[],[],[],[],[],[]];
+        copyArray(puzzle,currentSolve)
+        for (let i = 0; i<9;i++){
+            for (let j = 0; j<9;j++){
+                if (puzzle[i][j]!==0) continue;
+                if (document.getElementById(String(i)+String(j)).value !== ''){
+                    currentSolve[i][j] = Number(document.getElementById(String(i)+String(j)).value);
+                }
+            }
+        }
+        if (!checking) {
+            checking = true;
+            ValidColor();
+        }
+        else {
+            checking = false;
+            createSudokuGrid(puzzle,currentSolve);
+        }
     }
     document.getElementById('hintButton').onclick = function(){
         let currentSolve = [[],[],[],[],[],[],[],[],[]];
@@ -311,7 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
             }
-            createSudokuGrid(currentSolve);
+            createSudokuGrid(puzzle,currentSolve);
         }
         else {
             solvePuzzle(seed,puzzle,solution,0,0);
@@ -326,7 +371,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 if (hint) break;
             }
-            createSudokuGrid(currentSolve);
+            createSudokuGrid(puzzle,currentSolve);
         };
+    }
+    document.getElementById('startButton').onclick = function(){
+        if (enableTimer === false){
+            enableTimer = true;
+            document.getElementById('startButton').innerText = "Stop";
+        }
+        else {
+            enableTimer = false;
+            document.getElementById('startButton').innerText = "Start";
+        }
+        if(enableTimer) interval = setInterval(time,1000);
+        else clearInterval(interval);
     }
 });
