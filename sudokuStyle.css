@@ -4,7 +4,7 @@ body {
 }
 
 .container {
-    margin-top: 60px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,11 +30,24 @@ body {
 .darkBackground {
     background-color: #ccd4d2;
 }
-
+.timer{
+    background-color: #ccd4d2;
+    width: 300px;
+    height: 100px;
+    text-align: center;
+    margin: auto;
+    border: black solid 4px;
+}
+.timer h1 {
+    margin: 0;
+    position:relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 .buttonContainer {
     margin-top: 20px;
     display: flex;
-    /* Ensure buttons are always displayed */
     align-items: center;
     justify-content: center;
 }
@@ -46,7 +59,6 @@ body {
     border-radius: 20px;
     border-width: 2px;
     background-color: rgb(212, 209, 174);
-    /* Add margin between buttons */
 }
 
 .result {
