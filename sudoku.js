@@ -139,13 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
         deleteCell(puzzle);
         copyArray(puzzle,solution);
     }
-    generateRandomSudoku(puzzle);
+    generateRandomSudokuPuzzle(puzzle);
     createSudokuGrid(puzzle,puzzle);
-    // Function to generate a random Sudoku puzzle
-    function generateRandomSudoku(puzzle) {
-        generateRandomSudokuPuzzle(puzzle);
-        return puzzle;
-    }
     
     // Function to create the Sudoku puzzle grid
     function createSudokuGrid(puzzle, currentSolve) {
@@ -267,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     document.getElementById('generateButton').onclick = function(){
         copyArray(seed,puzzle);
-        generateRandomSudoku(puzzle)
+        generateRandomSudokuPuzzle(puzzle)
         createSudokuGrid(puzzle,puzzle);
         timer.innerHTML = "<h1>00:00:00</h1>"; 
         document.getElementById('startButton').innerText = "Start";
