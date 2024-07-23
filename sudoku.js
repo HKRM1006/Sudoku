@@ -389,7 +389,7 @@ document.addEventListener("DOMContentLoaded", function () {
             enableTimer = false;
             document.getElementById('startButton').innerText = "Start";
         }
-        if(enableTimer) interval = setInterval(time,1);
+        if(enableTimer) interval = setInterval(time,1000);
         else clearInterval(interval);
     }
 });
