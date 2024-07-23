@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 cellElement.style.backgroundColor = (puzzle[i][j]!==0)?'#ccd4d2':'#fafafa';
                 if (!cellElement.readOnly) {
                     cellElement.addEventListener('input', function() {
-                        this.value = this.value.replace(/[^0-9]/g, '');
+                        this.value = this.value.replace(/[^1-9]/g, '');
                         this.value = (this.value.length()>1)?this.value.charAt(0):this.value;
                     });
                 }
